@@ -8,7 +8,7 @@ int stickR = 0;
 int Rot = 0;
 int Hnappur = 13;
 int stickH = LOW;
-int stickHlast = LOW;
+int stickHlast = 0;
 int state = 0;
 int Rotary = 0;
 int Rtel = 0;
@@ -36,15 +36,16 @@ void loop () {
   digitalWrite(TrigPin,HIGH);
   delayMicroseconds(10);
   digitalWrite(TrigPin,LOW);
+
   stickH=digitalRead(Hnappur);
-  stickHlast = stickH;
+  
   
   
   cm = pulseIn(EchoPin,HIGH)/58.0;  
   cm = (int(cm * 100.0))/100.0;
 
-  if (stickHlast = LOW){
-    if(stickH = HIGH){
+  if (stickHlast == LOW){
+    if(stickH == HIGH){
       state++;
       state=state%2;
       Rtel=map(stickR, 0, 1023, 0, 180);
@@ -53,11 +54,11 @@ void loop () {
 
 
 
-  if(state=0){
+  if(state==0){
     Rot=stickR;
     Rot = map(Rot, 0, 1023, 0, 180);
   }
-  if(state=1){
+  if(state==1){
     Rotary = abs((Rtel%360)-180);
     Rot = Rotary;
     Rtel++;
@@ -84,4 +85,5 @@ void loop () {
   Serial.print(stickH);
   Serial.print(" , LastHnappur: ");
   Serial.println(stickHlast);
+  stickHlast = stickH;
 }
